@@ -18,6 +18,7 @@ class CreatePostsTable extends Migration
             $table->unsignedInteger('category_id')->nullable();
             $table->string('title', 100);
             $table->text('content');
+            $table->text('excerpt');
             $table->enum('status', ['opened', 'closed', 'draft'])->default('closed');
             $table->timestamps();
             $table->datetime('published_at');

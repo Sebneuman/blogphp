@@ -31,8 +31,7 @@ class PostRequest extends Request
             'status' => 'in:opened,closed,draft',
             'published_at' => 'date',
             'tag_id' =>'tags',
-            'picture' =>'image|max:3000',
-            'name' => 'string|max:20'
+            'picture' =>'image|max:3000'
         ];
     }
 }

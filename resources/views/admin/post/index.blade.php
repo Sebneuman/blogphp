@@ -11,28 +11,38 @@
 
 <h2>Dashboard</h2>
 
-<p class="maj">Mise à jour réussie</p>
+<div class="pagin">{{ $posts->links() }}</div>
 
-{{ $posts->links() }}
+@if(Session::has('message'))
+    <p class="maj">{{Session::get('message')}}</p>
+@endif
 
 <table>
-	<tr>
-		<th>id</th>
-		<th>statut</th>
-		<th>titre</th>
-		<th>auteur</th>
-		<th>date début et fin</th>
-		<th>catégorie</th>
-		<th>mot clés</th>
-		<th>changer le statut</th>
-		<th>supprimer</th>
-	</tr>
+	<thead>
+		<tr>
+			<th>numéro</th>
+			<th>statut</th>
+			<th>titre</th>
+			<th>auteur</th>
+			<th>date de création</th>
+			<th>catégorie</th>
+			<th>mot clés</th>
+			<th>publier</th>
+			<th>modifier</th>
+			<th>supprimer</th>
+		</tr>
+	</thead>
 
-	@foreach($posts as $post)
+    <div id="confirm" title="Vider l'article ?">
+        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:3px 7px 20px 0;"></span>Confirmez vous la suppression de l'article «&nbsp;<span></span>&nbsp;» ?</p>
+    </div>
+
+	@forelse($posts as $post)
 		<tr>
 			<td>{{ $post->id }}</td>
-			<td>{{ $post->statut }}</td>
-			<td><a href="{{url('post', [$post->id, 'edit'])}}">{{ $post->title }}</a></td>
+			<td {{$post->status==='opened'? 'class=ouvert' : 'class=ferme'}}>{{ $post->status }}</td>
+
+			<td><a href="{{url('article', [$post->id])}}">{{ $post->title }}</a></td>
 			<td>{{ $post->user? $post->user->name : 'aucun auteur' }}</td>
 			<td>{{ $post->created_at }}</td>
 			<td>
@@ -47,16 +57,28 @@
 					@endforeach
 				@endif
 			</td>
-			<td><button class="statut">unpublish</button></td>
+			<td id="publier">
+				@if($post->status === 'opened')
+                    <a href="{{action('PostController@published', $post)}}" class="btn publier">dé-publier</a>
+                @else
+                    <a href="{{action('PostController@published', $post)}}" class="btn publier">publier</a>
+                @endif
+			</td>
+			<td><a href="{{url('post', [$post->id, 'edit'])}}" class="btn modifier">modifier</a></td>
 			<td>
-				<form action="{{url('post', $post->id)}}" method="post">
-					<input type="hidden" name="_method" value="DELETE">
-					{{ csrf_field() }}
-					<button type="submit" value="delete" class="supprimer">supprimer</button>
-				</form>
+				<form class="destroy" method="POST" action="{{url('post', $post->id)}}">
+                    {{ method_field('DELETE') }}
+                    {{ csrf_field() }}
+                    <input type="hidden" name="title_h" value="{{$post->title}}">
+                    <input class="btn supprimer" name="delete" type="submit" value="supprimer">
+                </form>
 			</td>
 		</tr>
-	@endforeach
+	@empty
+		<p>Il n'y a aucun article en base</p>
+	@endforelse
 </table>
+
+<div class="pagin">{{ $posts->links() }}</div>
 
 @endsection

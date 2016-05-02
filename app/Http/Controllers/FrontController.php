@@ -17,8 +17,9 @@ class FrontController extends Controller
     public function index(Request $request){
 
     	$title = "Blog PHP";
-    	$posts = Post::with('category', 'user', 'tags', 'picture')/*->published()*/->paginate($this->paginate);
-    	return view('front.index', compact('title', 'posts'));
+    	$posts = Post::with('category', 'user', 'tags', 'picture')->paginate($this->paginate);
+    	
+        return view('front.index', compact('title', 'posts'));
     }
 
 
@@ -45,10 +46,11 @@ class FrontController extends Controller
     public function showPostByCat($id)
     {
     	$category = Category::findOrFail($id);
-    	$posts = $category->posts/*()->published()->get()*/;
+    	$posts = $category->posts()->published()->get();
         $name = $category->title;
         $title = "Articles de la catégorie {$category->title}";
 
     	return view('front.category', compact('title', 'posts', 'name'));
     }
+
 }

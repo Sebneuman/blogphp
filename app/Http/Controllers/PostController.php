@@ -7,6 +7,7 @@ use App\Tag;
 use App\Post;
 use App\Picture;
 use App\Category;
+use Carbon\Carbon;
 use App\Http\Requests;
 use App\Http\Requests\PostRequest;
 use Illuminate\Http\Request;
@@ -36,7 +37,6 @@ class PostController extends Controller
         $categories = Category::lists('title', 'id');
         $tags = Tag::lists('name', 'id');
         $userId = Auth::user()->id;
-        //$post = new Post;
 
         return view('admin.post.create', compact('categories', 'tags', 'userId'));
     }
@@ -63,7 +63,7 @@ class PostController extends Controller
             $this->upload($im, $request->input('name'), $post->id);
         }
 
-        return redirect('post')->with('message', 'success');
+        return redirect('post')->with('message', 'L\'article a bien été créé');
     }
 
     /**
@@ -105,7 +105,7 @@ class PostController extends Controller
             $this->upload($im, $post->id);
         }
 
-        return redirect('post')->with('message', 'success');
+        return redirect('post')->with('message', 'La modification a bien été éffectuée');
     }
 
     public function destroy($id)
@@ -113,8 +113,9 @@ class PostController extends Controller
         $post = Post::findOrFail($id);
         $title = $post->title;
         $post->delete();
+        $this->deletePicture($post);
 
-        return redirect('post')->with(['message' => sprintf('success delete resource %s', $title)]);
+        return redirect('post')->with(['message' => sprintf('L\'article a bien été supprimé : %s', $title)]);
     }
 
     /**
@@ -137,7 +138,6 @@ class PostController extends Controller
             'post_id' => $postId
         ]);
 
-        // exception levé par le framework si pb
         $im->move(env('UPLOAD_PICTURES', 'uploads'), $uri);
 
         return true;
@@ -161,5 +161,20 @@ class PostController extends Controller
         }
 
         return false;
+    }
+
+
+    public function published(Post $post)
+    {
+        $post->status === 'opened'? $post->status = 'closed' : $post->status = 'opened';
+
+        if($post->status === 'opened')
+        {
+            $post->published_at = Carbon::now();
+        }
+
+        $post->touch();
+
+        return redirect('post');
     }
 }

@@ -25,6 +25,7 @@ $factory->define(App\Post::class, function (Faker\Generator $faker) {
     return [
         'title' => $faker->name,
         'content' => $faker->paragraph(5),
+        'excerpt' => $faker->paragraph(1),
         'status' => (rand(1, 10) == 1) ? 'opened' : 'closed',
         'published_at' => $faker->datetime('now'),
         'category_id' => rand(1, 2),
@@ -34,8 +35,7 @@ $factory->define(App\Post::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Category::class, function (Faker\Generator $faker) {
     return [
-        'title' => $faker->title,
-        'excerpt' => $faker->paragraph(2)
+        'title' => $faker->title
     ];
 });
 

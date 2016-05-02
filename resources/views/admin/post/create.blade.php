@@ -9,7 +9,8 @@
 
 @section('content')
 
-<h2>Créer un post</h2>
+<h2>Créer un article</h2>
+
 @if(Session::has('message'))
 	<p>{{ Session::get('message') }}</p>
 @endif
@@ -34,10 +35,6 @@
 		<span class="error">{{ $errors->first('content') }}</span>
 	@endif
 
-	<p>
-		<label for="name">Nom de l'image</label>
-		<input type="text" name="name" id="name">
-	</p>
 	<p>
 		<label for="picture">Télécharger une image</label><br>
 		<input type="file" name="picture" id="picture">
@@ -70,12 +67,7 @@
         <span class="error">{{ $errors->first('tag_id') }}</span>
     @endif
 
-    <p>
-    	<label for="statut">Publier l'article</label><br>
-    	<input type="checkbox" name="status" id="statut" value="opened">
-    </p>
-
-    <p><input type="submit" value="Valider"></p>
+    <p><input type="submit" value="Valider" class="valider"></p>
 	
 </form>
 

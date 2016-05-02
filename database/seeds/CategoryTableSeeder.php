@@ -11,6 +11,15 @@ class CategoryTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Category::class, 2)->create();
+        DB::table('categories')->insert(
+        	[
+        		[
+        			'title' => 'Conférences'
+        		],
+        		[
+        			'title' => 'Nouveautés'
+        		]
+        	]
+        );
     }
 }

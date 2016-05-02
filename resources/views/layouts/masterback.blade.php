@@ -3,12 +3,12 @@
     <head>
         <title>@yield('title', 'Blog PHP')</title>
 
-        <link rel="stylesheet" href="{{ asset('assets/css/knacss.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/mainback.css') }}">
-        <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700,400italic' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="{{ url('assets/css/app.min.css') }}">
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,300,700,400italic">
         
     </head>
-    <body>
+    <body class="masterback">
         <header>
             <h1>Conférences PHP</h1>
             <nav>@include('partials.navback')</nav>
@@ -27,6 +27,7 @@
         <footer></footer>
 
         <script src="http://code.jquery.com/jquery-2.2.2.min.js"></script>
-        <script src="{{ asset('assets/js/app.min.js') }}"></script>
+        <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script src="{{ url('assets/js/app.min.js') }}"></script>
     </body>
 </html>

@@ -47,7 +47,7 @@ class Handler extends ExceptionHandler
     {
         if ($e instanceof AuthorizationException)
         {
-            abort(403, 'Désolé, vous ne pouvez pas accéder à cette page');
+            abort(403);
         }
 
         if($e instanceof ModelNotFoundException){

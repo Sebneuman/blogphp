@@ -34,7 +34,6 @@
 	</div>
 @endforeach
 
-
 @endsection
 
 @section('sidebar')
